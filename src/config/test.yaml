@@ -1,0 +1,10 @@
+---
+  hostname: localhost
+  port: 5000
+
+  database:
+    type: sqlite
+    database: ./tmp/test-db.sql
+
+  fallback:
+  - https://registry.npmjs.org
