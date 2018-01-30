@@ -19,4 +19,15 @@ describe('/-/whoami', () => {
       .expect(401);
   });
 
+  it('[GET] should return info about user if user logged in', async () => {
+    await app.login();
+
+    return request(app.server)
+      .get('/-/whoami')
+      .set('authorization', `Bearer ${app.token}`)
+      .expect(200)
+      .expect(response => {
+        if (response.body.username !== app.id) throw new Error('Invalid username in response');
+      });
+  });
 });

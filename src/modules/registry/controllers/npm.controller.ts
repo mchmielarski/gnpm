@@ -18,7 +18,7 @@ export class NpmController {
   @Get('tokens')
   async tokens(@CurrentUser() user: User) {
     return {
-      object: await this.tokensService.findForUser(user.id)
+      objects: await this.tokensService.findForUser(user.id)
     };
   }
 }

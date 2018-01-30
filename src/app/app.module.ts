@@ -14,7 +14,7 @@ import { StorageModule, StorageType } from '../modules/storage';
 @Module({
   imports: [
     DatabaseModule,
-    LoggerModule.forRoot([new ConsoleAdapter(LogLevel.INFO)]),
+    LoggerModule.forRoot([new ConsoleAdapter(LogLevel.ERROR)]),
     RegistryModule,
     StorageModule.forRoot(StorageType.LOCAL, { root: join(__dirname, '../../data') })
   ]
