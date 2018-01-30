@@ -1,11 +1,11 @@
-import { PackagePublishAttachmentDTO } from './package-publish-attachment.dto';
-import { PackagePublishVersionDTO } from './package-publish-version.dto';
+import { PackagePublishAttachmentsDTO } from './package-publish-attachments.dto';
+import { PackagePublishVersionsDTO } from './package-publish-versions.dto';
 
 export interface PackagePublishDTO {
   name: string;
   description: string;
   distTags: {[tag: string]: string};
   readme: string;
-  versions: {[version: string]: PackagePublishVersionDTO };
-  _attachments: {[name: string]: PackagePublishAttachmentDTO};
+  versions: PackagePublishVersionsDTO;
+  attachments: PackagePublishAttachmentsDTO;
 }

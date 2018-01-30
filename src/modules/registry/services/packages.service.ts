@@ -1,13 +1,15 @@
 import { Component } from '@nestjs/common';
 
 import { waitOnNextTick } from '../../common';
-import { PackagePublishDTO } from '../dto';
+import { PackagePublishDTO, PackageNameDTO } from '../dto';
 import { PackagesFallbackService } from './packages-fallback.service';
 import { PackagesLocalService } from './packages-local.service';
+import { AttachmentsService } from './attachments.service';
 
 @Component()
 export class PackagesService {
   constructor(
+    private readonly attachmentsService: AttachmentsService,
     private readonly fallbackService: PackagesFallbackService,
     private readonly localService: PackagesLocalService
   ) {}
@@ -51,7 +53,8 @@ export class PackagesService {
     return stream;
   }
 
-  save(pkgDTO: PackagePublishDTO) {
-    return this.localService.save(pkgDTO);
+  async save(pkgName: PackageNameDTO, pkgData: PackagePublishDTO) {
+    await this.localService.save(pkgData);
+    await this.attachmentsService.saveAll(pkgName, pkgData.attachments);
   }
 }

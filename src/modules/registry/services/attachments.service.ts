@@ -4,39 +4,37 @@ import { Buffer } from 'buffer';
 import { join } from 'path';
 
 import { StorageService } from '../../storage';
-import { PackagePublishDto } from '../dto';
+import { PackagePublishAttachmentDTO, PackagePublishAttachmentsDTO, PackageNameDTO } from '../dto';
 import { AttachmentReadableStream } from '../util/attachment-readable-stream';
 
 @Component()
 export class AttachmentsService {
-  constructor(
-    private readonly storage: StorageService
-  ) {}
+  constructor(private readonly storage: StorageService) {}
 
-  getAttachmentData(dto, name: string) {
-    return dto._attachments[name].data;
-  }
-
-  getAttachmentDataAsStream(dto, name: string): Readable {
-    return new AttachmentReadableStream(this.getAttachmentData(dto, name));
-  }
-
-  saveAll(pkg: PackagePublishDto) {
+  saveAll(pkgName: PackageNameDTO, attachments: PackagePublishAttachmentsDTO) {
     const promises: Promise<void>[] = [];
 
-    for (const attachmentName in pkg._attachments) {
-      if (pkg._attachments.hasOwnProperty(attachmentName)) {
-        promises.push(this.save(pkg, attachmentName));
+    for (const attachmentName in attachments) {
+      if (attachments.hasOwnProperty(attachmentName)) {
+        promises.push(this.save(pkgName, attachmentName, attachments[attachmentName]));
       }
     }
 
     return Promise.all(promises);
   }
 
-  save(pkg: PackagePublishDto, attachmentName: string): Promise<void> {
+  private getAttachmentDataAsStream(attachment: PackagePublishAttachmentDTO): Readable {
+    return new AttachmentReadableStream(attachment);
+  }
+
+  private save(
+    pkgName: PackageNameDTO,
+    attachmentName: string,
+    attachment: PackagePublishAttachmentDTO
+  ): Promise<void> {
     return new Promise((resolve, reject) => {
-      const src = this.getAttachmentDataAsStream(pkg, attachmentName);
-      const dest = this.storage.createWriteStream(join(pkg.name, attachmentName));
+      const src = this.getAttachmentDataAsStream(attachment);
+      const dest = this.storage.createWriteStream(join(pkgName.full, attachmentName));
 
       src
         .on('end', () => resolve())

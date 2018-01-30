@@ -26,9 +26,7 @@ export class PackageVersion {
   @Index()
   version: string;
 
-  @Column({
-    type: 'text'
-  })
+  @Column({ type: 'text' })
   description: string = '';
 
   @Column({ type: 'simple-json', nullable: true })
@@ -37,16 +35,14 @@ export class PackageVersion {
   @Column({ type: 'simple-array', nullable: true })
   keywords: string[];
 
-  @Column()
-  author: string;
+  @Column() author: string;
 
-  @Column()
-  license: string;
+  @Column() license: string;
 
-  @Column()
+  @Column({ nullable: true })
   readme: string;
 
-  @Column()
+  @Column({ nullable: true })
   readmeFilename: string;
 
   @Column({ default: false })
@@ -64,9 +60,7 @@ export class PackageVersion {
   @Column({ type: 'simple-json', nullable: true })
   dist: { [key: string]: string };
 
-  @Column({
-    default: false
-  })
+  @Column({ default: false })
   fallback: boolean;
 
   @ManyToOne(type => Package, pkg => pkg.versions)
@@ -76,5 +70,4 @@ export class PackageVersion {
   distTags: PackageDistTag[];
 
   @CreateDateColumn() created: Date;
-
 }

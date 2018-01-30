@@ -1,12 +1,14 @@
 import { Readable } from 'stream';
 import { Buffer } from 'buffer';
 
+import { PackagePublishAttachmentDTO } from '../dto';
+
 export class AttachmentReadableStream extends Readable {
 
-  constructor(data: string) {
+  constructor(attachment: PackagePublishAttachmentDTO) {
     super();
 
-    this.push(new Buffer(data, 'base64'));
+    this.push(new Buffer(attachment.data, 'base64'));
     this.close();
   }
 

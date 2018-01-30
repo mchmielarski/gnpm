@@ -1,9 +1,9 @@
 import { Controller, All, Get, Headers, Query, Put, Res, Req, Param, Body } from '@nestjs/common';
 import { Response, Request } from 'express';
 
-import { Abbreviated } from '../decorators';
+import { Abbreviated, PackageName } from '../decorators';
 import { PackageNotFoundException, TarballNotFoundException } from '../exceptions';
-import { PackagePublishDTO } from '../dto';
+import { PackagePublishDTO, PackageNameDTO } from '../dto';
 import { PackagePublishDTOPipe } from '../pipes';
 import { AttachmentsService, PackagesService } from '../services';
 
@@ -27,14 +27,11 @@ export class PackagesController {
 
   @Put(':pkgName')
   async publish(
+    @PackageName('pkgName') pkgName: PackageNameDTO,
     @Body(new PackagePublishDTOPipe())
-    pkg: PackagePublishDTO,
-    @Headers() heads
+    pkgData: PackagePublishDTO
   ) {
-    await Promise.all([
-      this.packagesService.save(pkg),
-      this.attachments.saveAll(pkg)
-    ]);
+    return this.packagesService.save(pkgName, pkgData);
   }
 
   @Get(':scope/:package/-/:tarball')

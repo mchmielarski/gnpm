@@ -10,6 +10,18 @@ class Config {
     this.init();
   }
 
+  getEnv() {
+    return process.env.NODE_ENV || 'dev';
+  }
+
+  isDevEnv() {
+    return this.getEnv() === 'dev';
+  }
+
+  isTestEnv() {
+    return this.getEnv() === 'test';
+  }
+
   getPort() {
     return this.data.port;
   }
@@ -31,7 +43,7 @@ class Config {
   }
 
   private init() {
-    const env = process.env.NODE_ENV || 'dev';
+    const env = this.getEnv();
     const path = join(__dirname + '../../../config');
 
     try {

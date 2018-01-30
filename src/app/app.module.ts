@@ -10,11 +10,12 @@ import {
   ResponseTimeMiddleware
 } from '../modules/middlewares';
 import { StorageModule, StorageType } from '../modules/storage';
+import { config } from '../modules/config';
 
 @Module({
   imports: [
     DatabaseModule,
-    LoggerModule.forRoot([new ConsoleAdapter(LogLevel.ERROR)]),
+    LoggerModule.forRoot([new ConsoleAdapter(config.isDevEnv() ? LogLevel.INFO : LogLevel.ERROR)]),
     RegistryModule,
     StorageModule.forRoot(StorageType.LOCAL, { root: join(__dirname, '../../data') })
   ]
