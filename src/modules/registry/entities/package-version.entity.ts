@@ -27,42 +27,41 @@ export class PackageVersion {
   version: string;
 
   @Column({
-    type: 'text',
-    nullable: true
+    type: 'text'
   })
-  description: string;
+  description: string = '';
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'simple-json', nullable: true })
   scripts: { [key: string]: string };
 
   @Column({ type: 'simple-array', nullable: true })
   keywords: string[];
 
-  @Column({ nullable: true })
+  @Column()
   author: string;
 
-  @Column({ nullable: true })
+  @Column()
   license: string;
 
-  @Column({ nullable: true })
+  @Column()
   readme: string;
 
-  @Column({ nullable: true })
+  @Column()
   readmeFilename: string;
 
   @Column({ default: false })
   hasShrinkwrap: boolean;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'simple-json', nullable: true })
   directories: { [key: string]: string };
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'simple-json', nullable: true })
   dependencies: { [key: string]: string };
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'simple-json', nullable: true })
   devDependencies: { [key: string]: string };
 
-  @Column({ type: 'text' })
+  @Column({ type: 'simple-json', nullable: true })
   dist: { [key: string]: string };
 
   @Column({
@@ -70,7 +69,7 @@ export class PackageVersion {
   })
   fallback: boolean;
 
-  @ManyToOne(type => Package, pkg => pkg.versions, { cascadeRemove: true })
+  @ManyToOne(type => Package, pkg => pkg.versions)
   package: Package;
 
   @OneToMany(type => PackageDistTag, tag => tag.version)
@@ -78,41 +77,4 @@ export class PackageVersion {
 
   @CreateDateColumn() created: Date;
 
-  @AfterLoad()
-  onAfterLoad() {
-    try {
-      this.dist = JSON.parse(this.dist as any);
-    } catch (e) {}
-
-    try {
-      this.dependencies = JSON.parse(this.dependencies as any);
-    } catch (e) {}
-
-    try {
-      this.devDependencies = JSON.parse(this.devDependencies as any);
-    } catch (e) {}
-
-    try {
-      this.scripts = JSON.parse(this.scripts as any);
-    } catch (e) {}
-  }
-
-  @BeforeInsert()
-  onBeforeInsert() {
-    try {
-      (this.dist as any) = JSON.stringify(this.dist);
-    } catch (e) {}
-
-    try {
-      (this.dependencies as any) = JSON.stringify(this.dependencies);
-    } catch (e) {}
-
-    try {
-      (this.devDependencies as any) = JSON.stringify(this.devDependencies);
-    } catch (e) {}
-
-    try {
-      (this.scripts as any) = JSON.stringify(this.scripts);
-    } catch (e) {}
-  }
 }

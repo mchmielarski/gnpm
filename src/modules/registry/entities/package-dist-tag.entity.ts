@@ -17,7 +17,7 @@ export class PackageDistTag {
   @Index()
   version: string;
 
-  @ManyToOne(type => Package, pkg => pkg.distTags, { cascadeRemove: true })
+  @ManyToOne(type => Package, pkg => pkg.distTags)
   package: Package;
 
   @CreateDateColumn()

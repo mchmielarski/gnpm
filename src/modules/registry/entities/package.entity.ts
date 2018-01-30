@@ -1,4 +1,12 @@
-import { Entity, Index, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Index,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn
+} from 'typeorm';
 
 import { PackageDistTag } from './package-dist-tag.entity';
 import { PackageVersion } from './package-version.entity';
@@ -14,16 +22,14 @@ export class Package {
   name: string;
 
   @Column({
-    type: 'text',
-    nullable: true
+    type: 'text'
   })
-  description: string;
+  description: string = '';
 
   @Column({
-    type: 'text',
-    nullable: true
+    type: 'text'
   })
-  readme: string;
+  readme: string = '';
 
   @Column({
     default: false
@@ -41,10 +47,7 @@ export class Package {
   @OneToMany(type => PackageDistTag, distTag => distTag.package)
   distTags: PackageDistTag[];
 
-  @CreateDateColumn()
-  created: Date;
+  @CreateDateColumn() created: Date;
 
-  @UpdateDateColumn()
-  updated: Date;
-
+  @UpdateDateColumn() updated: Date;
 }

@@ -50,7 +50,7 @@ export class PackagesLocalService {
       return aggr;
     }, {});
 
-    const versions = pkg. versions.reduce((aggr: any, version) => {
+    const versions = pkg.versions.reduce((aggr: any, version) => {
       version.dist.tarball = `${config.getLocalRegistry()}${version.dist.tarball}`;
 
       aggr[version.version] = {
@@ -66,12 +66,14 @@ export class PackagesLocalService {
       return aggr;
     }, {});
 
+    // tslint:disable
     const manifest = {
-      'modified': pkg.updated,
-      'name': pkg.name,
+      modified: pkg.updated,
+      name: pkg.name,
       'dist-tags': distTags,
       versions
     };
+    // tslint:enable
 
     return manifest;
   }
@@ -88,8 +90,7 @@ export class PackagesLocalService {
   }
 
   private async findOneByName(name: string, withVersions = false) {
-    const relations = withVersions ? {relations: ['versions', 'distTags']} : {};
+    const relations = withVersions ? { relations: ['versions', 'distTags'] } : {};
     return this.packagesRepository.findOne({ where: { name }, ...relations });
   }
-
 }

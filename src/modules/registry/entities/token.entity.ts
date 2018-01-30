@@ -18,7 +18,7 @@ export class Token {
   @Column({ default: false })
   readonly: boolean;
 
-  @Column('simple-array', { default: [] })
+  @Column({ type: 'simple-array', nullable: true })
   cidrWhitelist: string[];
 
   @ManyToOne(type => User, user => user.tokens)

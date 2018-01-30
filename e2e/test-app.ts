@@ -16,6 +16,8 @@ export class TestApp {
     const app = module.createNestApplication(server);
     await app.init();
 
+    await getConnection().dropDatabase();
+
     return new TestApp(server, app);
   }
 

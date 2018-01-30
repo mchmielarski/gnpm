@@ -2,7 +2,7 @@ import { Component } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { _ } from '../../../common';
+import { _ } from '../../common';
 import { UserCreateDTO, UserLoginOrCreateDTO } from '../dto';
 import { User } from '../entities';
 
