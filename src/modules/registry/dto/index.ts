@@ -1,3 +1,4 @@
+export { OrgCreateOrUpdateDTO } from './org-create-or-update.dto';
 export { OrgMemberCreateOrUpdateDTO } from './org-member-create-or-update.dto';
 export { OrgMemberDeleteDTO } from './org-member-delete.dto';
 export { PackageNameDTO } from './package-name.dto';

@@ -1,3 +1,5 @@
 import { createRouteParamDecorator } from '@nestjs/common';
 
-export const CurrentUser = createRouteParamDecorator((data, request) => request.user);
+import { getUser } from '../util';
+
+export const CurrentUser = createRouteParamDecorator((data, request) => getUser(request));

@@ -11,16 +11,17 @@ import {
   UseGuards
 } from '@nestjs/common';
 
-import { AuthRequired, CurrentOrg } from '../decorators';
+import { AuthRequired, CurrentOrg, RequiredPermissions } from '../decorators';
 import { OrgMemberCreateOrUpdateDTO, OrgMemberDeleteDTO } from '../dto';
 import { Org } from '../entities';
+import { Permission } from '../enums';
 import { OrgNotFoundException, UserNotFoundException } from '../exceptions';
 import { UsersExceptionsFilter } from '../filters';
-import { AuthGuard, OrgExistsGuard } from '../guards';
+import { AuthGuard, OrgExistsGuard, PermissionsGuard } from '../guards';
 import { OrgMembersService, UsersService } from '../services';
 
 @UseFilters(new UsersExceptionsFilter())
-@UseGuards(AuthGuard, OrgExistsGuard)
+@UseGuards(AuthGuard, OrgExistsGuard, PermissionsGuard)
 @Controller('-/org/:org/user')
 export class OrgMembersController {
   constructor(
@@ -29,9 +30,9 @@ export class OrgMembersController {
   ) {}
 
   @Get()
-  @AuthRequired()
+  @RequiredPermissions(Permission.ORG_MEMBER)
   async list(@CurrentOrg() org: Org) {
-    const members = await this.orgMembersService.findForOrg(org.name);
+    const members = await this.orgMembersService.find(org.name);
 
     return members.reduce(
       (aggr, member) => ({
@@ -43,13 +44,13 @@ export class OrgMembersController {
   }
 
   @Put()
-  @AuthRequired()
+  @RequiredPermissions(Permission.ORG_ADMIN)
   @HttpCode(HttpStatus.CREATED)
   async createOrUpdate(@CurrentOrg() org: Org, @Body() memberData: OrgMemberCreateOrUpdateDTO) {
     await this.ensureThatUserExists(memberData.user);
-    await this.orgMembersService.createOrUpdate(memberData.user, org.name, memberData.role);
+    await this.orgMembersService.save(org.name, memberData.user, memberData.role);
 
-    const size = await this.orgMembersService.countForOrg(org.name);
+    const size = await this.orgMembersService.count(org.name);
 
     return {
       org: {
@@ -61,11 +62,18 @@ export class OrgMembersController {
   }
 
   @Delete()
-  @AuthRequired()
+  @RequiredPermissions(Permission.ORG_ADMIN)
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@CurrentOrg() org: Org, @Body() memberData: OrgMemberDeleteDTO) {
     await this.ensureThatUserExists(memberData.user);
-    await this.orgMembersService.deleteFromOrg(memberData.user, org.name);
+    await this.ensureThatUserIsMember(org.name, memberData.user);
+    await this.orgMembersService.delete(org.name, memberData.user);
+  }
+
+  private async ensureThatUserIsMember(orgName: string, userName: string) {
+    if (!await this.orgMembersService.isMember(orgName, userName)) {
+      throw new UserNotFoundException();
+    }
   }
 
   private async ensureThatUserExists(userName: string) {

@@ -8,7 +8,7 @@ import { AppModule } from '../src/app/app.module';
 
 export class TestApp {
   token: string;
-  id: string;
+  user: string;
 
   static async create() {
     const module = await Test.createTestingModule({
@@ -31,6 +31,10 @@ export class TestApp {
     private readonly app: INestApplication
   ) {}
 
+  setAuthHeader(req, token = this.token) {
+    return req.set('authorization', `Bearer ${token}`);
+  }
+
   dropDatabase() {
     return getConnection().dropDatabase();
   }
@@ -40,27 +44,43 @@ export class TestApp {
   }
 
   async login() {
-    this.id = 'user_' + Date.now();
-    await request(this.server)
-      .put(`/-/user/org.couchdb.user:${this.id}`)
-      .send({
-        _id: this.id,
-        name: this.id,
-        password: '111111',
-        email: `${this.id}@email.com`
-      })
-      .expect(response => {
-        this.token = response.body.token;
-      });
+    this.user = 'user_' + Date.now();
+
+    const response = await this.createUser({
+      name: this.user,
+      password: '111111',
+      email: `${this.user}@email.com`
+    });
+
+    this.token = response.body.token;
   }
 
   async logout() {
     await request(this.server)
       .delete(`/-/user/token/${this.token}`)
+      .set('authorization', `Bearer ${this.token}`);
+
+    this.token = null;
+  }
+
+  createUser(data: { name: string; email: string; password: string }) {
+    return request(this.server)
+      .put(`/-/user/org.couchdb.user:${data.name}`)
+      .send(data);
+  }
+
+  createOrg(data: { name: string }) {
+    return request(this.server)
+      .put(`/-/org`)
       .set('authorization', `Bearer ${this.token}`)
-      .expect(() => {
-        this.token = null;
-      });
+      .send(data);
+  }
+
+  addMember(orgName: string, user: string, role: string) {
+    return request(this.server)
+      .put(`/-/org/${orgName}/user`)
+      .set('authorization', `Bearer ${this.token}`)
+      .send({ user, role });
   }
 
   async resetDatabase() {

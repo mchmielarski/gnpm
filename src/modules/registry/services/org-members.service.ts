@@ -11,24 +11,40 @@ export class OrgMembersService {
     @InjectRepository(OrgMember) private readonly orgMembersRepository: Repository<OrgMember>
   ) {}
 
-  findForOrg(orgName: string) {
+  find(orgName: string) {
     return this.orgMembersRepository.find({ where: { orgName }, relations: ['user'] });
   }
 
-  getForOrg(userName: string, orgName: string) {
+  get(orgName: string, userName: string) {
     return this.orgMembersRepository.findOne({ where: { orgName, userName } });
   }
 
-  countForOrg(orgName: string) {
+  isOwner(orgName: string, userName: string) {
+    return this.hasRole(orgName, userName, Role.OWNER);
+  }
+
+  isAdmin(orgName: string, userName: string) {
+    return this.hasRole(orgName, userName, Role.ADMIN);
+  }
+
+  isDeveloper(orgName: string, userName: string) {
+    return this.hasRole(orgName, userName, Role.DEVELOPER);
+  }
+
+  async isMember(orgName: string, userName: string) {
+    return !!await this.get(orgName, userName);
+  }
+
+  count(orgName: string) {
     return this.orgMembersRepository.count({ where: { orgName } });
   }
 
-  deleteFromOrg(userName: string, orgName: string) {
+  delete(orgName: string, userName: string) {
     return this.orgMembersRepository.delete({ userName, orgName });
   }
 
-  async createOrUpdate(userName: string, orgName: string, role: Role) {
-    const currentMember = await this.getForOrg(userName, orgName);
+  async save(orgName: string, userName: string, role: Role) {
+    const currentMember = await this.get(orgName, userName);
     let member: OrgMember;
 
     if (currentMember) {
@@ -42,5 +58,10 @@ export class OrgMembersService {
     }
 
     return this.orgMembersRepository.save(member);
+  }
+
+  private async hasRole(orgName: string, userName: string, role: Role) {
+    const member = await this.get(orgName, userName);
+    return !!(member && member.role === role);
   }
 }

@@ -35,7 +35,7 @@ export class PackageVersion {
   @Column({ type: 'simple-array', nullable: true })
   keywords: string[];
 
-  @Column() author: string;
+  @Column({ nullable: true }) author: string;
 
   @Column() license: string;
 

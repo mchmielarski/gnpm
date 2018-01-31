@@ -5,6 +5,7 @@ import { StorageModule } from '../storage';
 import {
   NpmController,
   OrgMembersController,
+  OrgsController,
   PackagesController,
   PingController,
   UsersController,
@@ -69,6 +70,7 @@ import { applyMiddlewareToControllers } from './util';
   controllers: [
     NpmController,
     OrgMembersController,
+    OrgsController,
     PackagesController,
     PingController,
     UsersController,
@@ -83,7 +85,8 @@ export class RegistryModule {
       PingController,
       WhoAmIController,
       NpmController,
-      OrgMembersController
+      OrgMembersController,
+      OrgsController
     ]);
 
     applyMiddlewareToControllers(consumer, OrgMiddleware, [OrgMembersController]);

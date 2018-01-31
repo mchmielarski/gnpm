@@ -3,6 +3,7 @@ import { Reflector } from '@nestjs/core';
 
 import { AUTH_REQUIRED_METADATA_KEY } from '../constants';
 import { UnauthorizedException } from '../exceptions';
+import { getUser } from '../util';
 
 @Guard()
 export class AuthGuard implements CanActivate {
@@ -11,7 +12,7 @@ export class AuthGuard implements CanActivate {
   canActivate(request, context: ExecutionContext): boolean {
     const { parent, handler } = context;
     const authRequired = this.reflector.get<string[]>(AUTH_REQUIRED_METADATA_KEY, handler);
-    const user = request.user;
+    const user = getUser(request);
 
     if (authRequired && !user) {
       throw new UnauthorizedException();
