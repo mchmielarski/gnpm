@@ -1,14 +1,7 @@
 import { BaseAdapter } from './base.adapter';
 import { Readable, Writable } from 'stream';
 import * as mkdirp from 'mkdirp';
-import {
-  createReadStream,
-  createWriteStream,
-  exists,
-  unlink,
-  writeFile,
-  readFile
-} from 'fs';
+import { createReadStream, createWriteStream, exists, unlink, writeFile, readFile } from 'fs';
 import { promisify } from 'util';
 import { join, basename, dirname } from 'path';
 

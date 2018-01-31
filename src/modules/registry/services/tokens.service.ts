@@ -8,18 +8,15 @@ import { Token } from '../entities';
 
 @Component()
 export class TokensService {
-  constructor(
-    @InjectRepository(Token)
-    private readonly tokensRepository: Repository<Token>
-  ) {}
+  constructor(@InjectRepository(Token) private readonly tokensRepository: Repository<Token>) {}
 
-  async create(userId: number) {
+  async create(userName: string) {
     const token = v4();
     const key = this.createKeyForToken(token);
     const entity = this.tokensRepository.create({
       key,
       token,
-      user: { id: userId }
+      user: { name: userName }
     });
     return this.tokensRepository.save(entity);
   }
@@ -28,8 +25,8 @@ export class TokensService {
     return this.tokensRepository.findOne({ where, relations: ['user'] });
   }
 
-  findForUser(userId: number) {
-    return this.tokensRepository.find({ where: { userId }});
+  findForUser(userName: string) {
+    return this.tokensRepository.find({ where: { userName } });
   }
 
   delete(key: string) {

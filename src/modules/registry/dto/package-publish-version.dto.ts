@@ -1,9 +1,8 @@
 export interface PackagePublishVersionDTO {
-
   name: string;
   version: string;
   description: string;
-  scripts: {[key: string]: string};
+  scripts: { [key: string]: string };
   keywords: string[];
   author: string;
   license: string;

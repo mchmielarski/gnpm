@@ -8,10 +8,7 @@ import { User } from '../entities';
 
 @Component()
 export class UsersService {
-  constructor(
-    @InjectRepository(User)
-    private readonly usersRepository: Repository<User>
-  ) {}
+  constructor(@InjectRepository(User) private readonly usersRepository: Repository<User>) {}
 
   async create(dto: UserCreateDTO) {
     const user = this.usersRepository.create(dto);
@@ -20,7 +17,11 @@ export class UsersService {
   }
 
   async get(name: string) {
-    return this.usersRepository.findOne({ where: { name }});
+    return this.usersRepository.findOneById(name);
+  }
+
+  async exists(name: string) {
+    return !!await this.get(name);
   }
 
   isUserCreateDTO(dto: UserLoginOrCreateDTO): dto is UserCreateDTO {

@@ -15,10 +15,7 @@ import {
 import { AuthRequired, CurrentUser } from '../decorators';
 import { UserLoginOrCreateDTO } from '../dto';
 import { User } from '../entities';
-import {
-  TokenNotFoundException,
-  UnauthorizedException,
-} from '../exceptions';
+import { TokenNotFoundException, UnauthorizedException } from '../exceptions';
 import { UsersExceptionsFilter } from '../filters';
 import { AuthGuard } from '../guards';
 import { UsersService, TokensService } from '../services';
@@ -52,7 +49,7 @@ export class UsersController {
       throw new UnauthorizedException();
     }
 
-    const token = await this.tokensService.create(user.id);
+    const token = await this.tokensService.create(user.name);
 
     return {
       ok: true,
@@ -71,7 +68,7 @@ export class UsersController {
       throw new TokenNotFoundException();
     }
 
-    if (tokenEntity.user.id !== user.id) {
+    if (tokenEntity.user.name !== user.name) {
       throw new UnauthorizedException();
     }
 

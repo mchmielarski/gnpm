@@ -1,4 +1,4 @@
-import { UnauthorizedException as UnauthorizedBaseException} from '@nestjs/common';
+import { UnauthorizedException as UnauthorizedBaseException } from '@nestjs/common';
 
 export class UnauthorizedException extends UnauthorizedBaseException {
   constructor() {

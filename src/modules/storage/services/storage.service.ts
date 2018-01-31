@@ -5,10 +5,7 @@ import { BaseAdapter } from '../adapters';
 
 @Component()
 export class StorageService {
-
-  constructor(
-    private readonly adapter: BaseAdapter
-  ) {}
+  constructor(private readonly adapter: BaseAdapter) {}
 
   async exists(name: string): Promise<boolean> {
     return this.adapter.exists(name);

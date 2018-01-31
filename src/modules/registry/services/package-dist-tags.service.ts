@@ -7,7 +7,8 @@ import { PackageDistTag } from '../entities';
 @Component()
 export class PackageDistTagsService {
   constructor(
-    @InjectRepository(PackageDistTag) private readonly packageDistTagsRepository: Repository<PackageDistTag>
+    @InjectRepository(PackageDistTag)
+    private readonly packageDistTagsRepository: Repository<PackageDistTag>
   ) {}
 
   saveAll(pkgId: number, pkgDistTags: { [tag: string]: string }) {

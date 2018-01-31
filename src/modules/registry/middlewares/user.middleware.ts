@@ -5,7 +5,7 @@ import { TokensService } from '../services/tokens.service';
 
 @Middleware()
 export class UserMiddleware implements NestMiddleware {
-  constructor(private readonly tokens: TokensService) {}
+  constructor(private readonly tokensService: TokensService) {}
 
   resolve(...args: any[]): ExpressMiddleware {
     return async (request: Request, res, next) => {
@@ -16,7 +16,7 @@ export class UserMiddleware implements NestMiddleware {
         const token = splittedHeader[1] ? splittedHeader[1].trim() : null;
 
         if (token) {
-          const tokenEntity = await this.tokens.findOne({ token });
+          const tokenEntity = await this.tokensService.findOne({ token });
           (request as any).user = tokenEntity ? tokenEntity.user : null;
         } else {
           (request as any).user = null;

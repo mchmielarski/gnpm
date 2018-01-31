@@ -1,5 +1,10 @@
-export function path<T, P extends keyof T>(paths: string | number | (number | string)[]): (obj: T) => T[P];
-export function path<T, P extends keyof T>(paths: string | number | (number | string)[], obj: T): T[P];
+export function path<T, P extends keyof T>(
+  paths: string | number | (number | string)[]
+): (obj: T) => T[P];
+export function path<T, P extends keyof T>(
+  paths: string | number | (number | string)[],
+  obj: T
+): T[P];
 export function path<T, P extends keyof T>(
   paths: string | number | (number | string)[],
   obj?: T

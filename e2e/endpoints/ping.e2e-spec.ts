@@ -19,5 +19,4 @@ describe('/-/ping', () => {
       .expect(200)
       .expect({});
   });
-
 });

@@ -1,5 +1,9 @@
+export { Org } from './org.entity';
+export { OrgMember } from './org-member.entity';
 export { Package } from './package.entity';
 export { PackageVersion } from './package-version.entity';
 export { PackageDistTag } from './package-dist-tag.entity';
+export { Team } from './team.entity';
+export { TeamMember } from './team-member.entity';
 export { Token } from './token.entity';
 export { User } from './user.entity';

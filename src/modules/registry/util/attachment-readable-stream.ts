@@ -4,7 +4,6 @@ import { Buffer } from 'buffer';
 import { PackagePublishAttachmentDTO } from '../dto';
 
 export class AttachmentReadableStream extends Readable {
-
   constructor(attachment: PackagePublishAttachmentDTO) {
     super();
 

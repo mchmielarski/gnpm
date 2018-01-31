@@ -15,13 +15,13 @@ describe('/-/npm/v1', () => {
   });
 
   describe('/tokens', () => {
-    it ('[GET] should return 401 if user is not logged in', () => {
+    it('[GET] should return 401 if user is not logged in', () => {
       return request(app.server)
         .get('/-/npm/v1/tokens')
         .expect(401);
     });
 
-    it ('[GET] should return list of tokens if user is logged in', async () => {
+    it('[GET] should return list of tokens if user is logged in', async () => {
       await app.login();
 
       return request(app.server)
@@ -33,5 +33,4 @@ describe('/-/npm/v1', () => {
         });
     });
   });
-
 });

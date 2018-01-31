@@ -16,10 +16,7 @@ const hashPasswordAsync = promisify(hashPassword);
 
 @Entity({ name: 'users' })
 export class User {
-  @PrimaryGeneratedColumn() id: number;
-
-  @Column({ unique: true })
-  name: string;
+  @PrimaryColumn() name: string;
 
   @Column({ length: 200 })
   email: string;

@@ -1,9 +1,18 @@
 import { defaultTo } from './default-to';
 import { path } from './path';
 
-export function pathOr<T, P extends keyof T>(defaultValue: T[P]): (paths: string | string[], obj?: T) => T[P];
-export function pathOr<T, P extends keyof T>(defaultValue: T[P], paths: string | string[]): (obj: T) => T[P];
-export function pathOr<T, P extends keyof T>(defaultValue: T[P], paths: string | string[], obj: T): T[P];
+export function pathOr<T, P extends keyof T>(
+  defaultValue: T[P]
+): (paths: string | string[], obj?: T) => T[P];
+export function pathOr<T, P extends keyof T>(
+  defaultValue: T[P],
+  paths: string | string[]
+): (obj: T) => T[P];
+export function pathOr<T, P extends keyof T>(
+  defaultValue: T[P],
+  paths: string | string[],
+  obj: T
+): T[P];
 export function pathOr<T, P extends keyof T>(
   defaultValue: T[P],
   paths?: string | string[],

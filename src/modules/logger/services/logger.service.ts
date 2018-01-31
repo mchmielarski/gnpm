@@ -29,15 +29,17 @@ function createStreams(adapters: RawAdapter[]) {
 @Component()
 export class LoggerService extends Logger {
   constructor(@Inject('ADAPTERS') adapters: RawAdapter[]) {
-    super(bunyan.createLogger({
-      name: 'gnpm',
-      streams: createStreams(adapters),
-      serializers: {
-        error: bunyan.stdSerializers.err,
-        request: bunyan.stdSerializers.req,
-        response: bunyan.stdSerializers.res
-      }
-    }));
+    super(
+      bunyan.createLogger({
+        name: 'gnpm',
+        streams: createStreams(adapters),
+        serializers: {
+          error: bunyan.stdSerializers.err,
+          request: bunyan.stdSerializers.req,
+          response: bunyan.stdSerializers.res
+        }
+      })
+    );
   }
 }
 

@@ -4,16 +4,29 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StorageModule } from '../storage';
 import {
   NpmController,
+  OrgMembersController,
   PackagesController,
   PingController,
   UsersController,
   WhoAmIController
 } from './controllers';
-import { Package, PackageDistTag, PackageVersion, Token, User } from './entities';
-import { UserMiddleware } from './middlewares';
+import {
+  OrgMember,
+  Org,
+  Package,
+  PackageDistTag,
+  PackageVersion,
+  Team,
+  TeamMember,
+  Token,
+  User
+} from './entities';
+import { UserMiddleware, OrgMiddleware } from './middlewares';
 import {
   AttachmentsService,
   FallbackService,
+  OrgsService,
+  OrgMembersService,
   PackagesService,
   PackagesFallbackService,
   PackagesLocalService,
@@ -22,12 +35,28 @@ import {
   TokensService,
   UsersService
 } from './services';
+import { applyMiddlewareToControllers } from './util';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Package, PackageDistTag, PackageVersion, Token, User])],
+  imports: [
+    TypeOrmModule.forFeature([
+      OrgMember,
+      Org,
+      Package,
+      PackageDistTag,
+      PackageVersion,
+      Team,
+      TeamMember,
+      Token,
+      User
+    ])
+  ],
   components: [
     AttachmentsService,
     FallbackService,
+    OrgsService,
+    OrgMembersService,
+    OrgMiddleware,
     PackagesService,
     PackagesFallbackService,
     PackagesLocalService,
@@ -39,6 +68,7 @@ import {
   ],
   controllers: [
     NpmController,
+    OrgMembersController,
     PackagesController,
     PingController,
     UsersController,
@@ -47,16 +77,15 @@ import {
 })
 export class RegistryModule {
   configure(consumer: MiddlewaresConsumer): void {
-    consumer
-      .apply(UserMiddleware)
-      .forRoutes(UsersController)
-      .apply(UserMiddleware)
-      .forRoutes(PackagesController)
-      .apply(UserMiddleware)
-      .forRoutes(PingController)
-      .apply(UserMiddleware)
-      .forRoutes(WhoAmIController)
-      .apply(UserMiddleware)
-      .forRoutes(NpmController);
+    applyMiddlewareToControllers(consumer, UserMiddleware, [
+      UsersController,
+      PackagesController,
+      PingController,
+      WhoAmIController,
+      NpmController,
+      OrgMembersController
+    ]);
+
+    applyMiddlewareToControllers(consumer, OrgMiddleware, [OrgMembersController]);
   }
 }

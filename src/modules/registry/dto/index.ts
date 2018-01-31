@@ -1,3 +1,5 @@
+export { OrgMemberCreateOrUpdateDTO } from './org-member-create-or-update.dto';
+export { OrgMemberDeleteDTO } from './org-member-delete.dto';
 export { PackageNameDTO } from './package-name.dto';
 export { PackagePublishAttachmentDTO } from './package-publish-attachment.dto';
 export { PackagePublishAttachmentsDTO } from './package-publish-attachments.dto';

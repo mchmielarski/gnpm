@@ -10,9 +10,7 @@ import { TokensService } from '../services';
 @UseGuards(AuthGuard)
 @Controller('-/npm/v1')
 export class NpmController {
-  constructor(
-    private readonly tokensService: TokensService
-  ) {}
+  constructor(private readonly tokensService: TokensService) {}
 
   @AuthRequired()
   @Get('tokens')

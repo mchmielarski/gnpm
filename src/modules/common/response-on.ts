@@ -24,7 +24,7 @@ export function send(response: Response, callback: () => void) {
 export function write(response: Response, callback: (buf) => void) {
   const previousWrite = response.write.bind(response);
 
-  response.write = (buf) => {
+  response.write = buf => {
     callback(buf);
     return previousWrite(buf);
   };

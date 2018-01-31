@@ -8,10 +8,7 @@ import { UnauthorizedException } from '../exceptions';
 export class AuthGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
-  canActivate(
-    request,
-    context: ExecutionContext
-  ): boolean {
+  canActivate(request, context: ExecutionContext): boolean {
     const { parent, handler } = context;
     const authRequired = this.reflector.get<string[]>(AUTH_REQUIRED_METADATA_KEY, handler);
     const user = request.user;

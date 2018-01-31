@@ -3,7 +3,6 @@ import { join } from 'path';
 import * as yaml from 'yaml';
 
 class Config {
-
   private data: any;
 
   constructor() {
@@ -58,10 +57,11 @@ class Config {
       throw new Error(`Config file ${configFilePath} does not exist.`);
     }
 
-    const content = readFileSync(configFilePath, { encoding: 'utf8' })
-      .split('\n')
-      .filter(line => line.trim().length > 0)
-      .join('\n') + '\n';
+    const content =
+      readFileSync(configFilePath, { encoding: 'utf8' })
+        .split('\n')
+        .filter(line => line.trim().length > 0)
+        .join('\n') + '\n';
 
     this.data = yaml.eval(content);
   }

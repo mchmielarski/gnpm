@@ -21,13 +21,13 @@ export class HttpLoggerMiddleware implements NestMiddleware {
         event: 'http:request:received'
       });
 
-      request.on('data', chunk => bytesIn += chunk.length);
+      request.on('data', chunk => (bytesIn += chunk.length));
 
       const done = (event: string) => {
         disposeOnFinish();
         disposeOnClose();
 
-        bytesOut = bytesOut || response.getHeader('content-length') as number || 0;
+        bytesOut = bytesOut || (response.getHeader('content-length') as number) || 0;
 
         this.logger.info({
           request: {
@@ -44,7 +44,7 @@ export class HttpLoggerMiddleware implements NestMiddleware {
         });
       };
 
-      responseOn.write(response, (buf) => {
+      responseOn.write(response, buf => {
         bytesOut += buf.length;
       });
 
