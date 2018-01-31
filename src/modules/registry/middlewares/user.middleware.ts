@@ -15,8 +15,12 @@ export class UserMiddleware implements NestMiddleware {
         const splittedHeader = header.split(' ');
         const token = splittedHeader[1] ? splittedHeader[1].trim() : null;
 
-        const tokenEntity = await this.tokens.findOne({ token });
-        (request as any).user = tokenEntity ? tokenEntity.user : null;
+        if (token) {
+          const tokenEntity = await this.tokens.findOne({ token });
+          (request as any).user = tokenEntity ? tokenEntity.user : null;
+        } else {
+          (request as any).user = null;
+        }
       }
 
       next();
