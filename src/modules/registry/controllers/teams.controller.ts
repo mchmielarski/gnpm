@@ -36,6 +36,7 @@ export class TeamsController {
 
   @Put('-/org/:org/team')
   @RequiredPermissions(Permission.ORG_ADMIN)
+  @HttpCode(HttpStatus.CREATED)
   async create(@CurrentOrg() org: Org, @Body() teamData: TeamCreateDTO) {
     await this.teamsService.save(org.name, teamData.name);
     return teamData;

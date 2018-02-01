@@ -71,11 +71,18 @@ export class TestApp {
     };
   }
 
-  createOrg(data: { name: string }) {
+  createOrg(name: string) {
     return request(this.server)
       .put(`/-/org`)
       .set('authorization', `Bearer ${this.token}`)
-      .send(data);
+      .send({ name });
+  }
+
+  createTeam(orgName: string, name: string) {
+    return request(this.server)
+      .put(`/-/org/${orgName}/team`)
+      .set('authorization', `Bearer ${this.token}`)
+      .send({ name });
   }
 
   addMember(orgName: string, user: string, role: string) {

@@ -16,7 +16,7 @@ describe('/-/org/[org]/user', () => {
 
   beforeEach(async () => {
     await app.login();
-    await app.createOrg({ name: 'test' });
+    await app.createOrg('test');
   });
 
   afterEach(async () => {
