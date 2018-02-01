@@ -8,6 +8,7 @@ import {
   OrgsController,
   PackagesController,
   PingController,
+  TeamsController,
   UsersController,
   WhoAmIController
 } from './controllers';
@@ -22,7 +23,7 @@ import {
   Token,
   User
 } from './entities';
-import { UserMiddleware, OrgMiddleware } from './middlewares';
+import { UserMiddleware, OrgMiddleware, TeamMiddleware } from './middlewares';
 import {
   AttachmentsService,
   FallbackService,
@@ -33,6 +34,7 @@ import {
   PackagesLocalService,
   PackageDistTagsService,
   PackageVersionsService,
+  TeamsService,
   TokensService,
   UsersService
 } from './services';
@@ -63,6 +65,8 @@ import { applyMiddlewareToControllers } from './util';
     PackagesLocalService,
     PackageDistTagsService,
     PackageVersionsService,
+    TeamMiddleware,
+    TeamsService,
     TokensService,
     UsersService,
     UserMiddleware
@@ -73,6 +77,7 @@ import { applyMiddlewareToControllers } from './util';
     OrgsController,
     PackagesController,
     PingController,
+    TeamsController,
     UsersController,
     WhoAmIController
   ]
@@ -86,9 +91,11 @@ export class RegistryModule {
       WhoAmIController,
       NpmController,
       OrgMembersController,
-      OrgsController
+      OrgsController,
+      TeamsController
     ]);
 
-    applyMiddlewareToControllers(consumer, OrgMiddleware, [OrgMembersController]);
+    applyMiddlewareToControllers(consumer, OrgMiddleware, [OrgMembersController, TeamsController]);
+    applyMiddlewareToControllers(consumer, TeamMiddleware, [TeamsController]);
   }
 }
