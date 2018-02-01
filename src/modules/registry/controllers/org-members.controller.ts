@@ -11,17 +11,17 @@ import {
   UseGuards
 } from '@nestjs/common';
 
-import { AuthRequired, CurrentOrg, RequiredPermissions } from '../decorators';
+import { CurrentOrg, RequiredPermissions } from '../decorators';
 import { OrgMemberCreateOrUpdateDTO, OrgMemberDeleteDTO } from '../dto';
 import { Org } from '../entities';
 import { Permission } from '../enums';
 import { OrgNotFoundException, UserNotFoundException } from '../exceptions';
 import { UsersExceptionsFilter } from '../filters';
-import { AuthGuard, OrgExistsGuard, PermissionsGuard } from '../guards';
+import { OrgExistsGuard, PermissionsGuard } from '../guards';
 import { OrgMembersService, UsersService } from '../services';
 
 @UseFilters(new UsersExceptionsFilter())
-@UseGuards(AuthGuard, OrgExistsGuard, PermissionsGuard)
+@UseGuards(OrgExistsGuard, PermissionsGuard)
 @Controller('-/org/:org/user')
 export class OrgMembersController {
   constructor(

@@ -12,16 +12,17 @@ import {
   UseGuards
 } from '@nestjs/common';
 
-import { AuthRequired, CurrentUser } from '../decorators';
+import { RequiredPermissions, CurrentUser } from '../decorators';
 import { UserLoginOrCreateDTO } from '../dto';
 import { User } from '../entities';
+import { Permission } from '../enums';
 import { TokenNotFoundException, UnauthorizedException } from '../exceptions';
 import { UsersExceptionsFilter } from '../filters';
-import { AuthGuard } from '../guards';
+import { PermissionsGuard } from '../guards';
 import { UsersService, TokensService } from '../services';
 
 @UseFilters(new UsersExceptionsFilter())
-@UseGuards(AuthGuard)
+@UseGuards(PermissionsGuard)
 @Controller('-/user')
 export class UsersController {
   constructor(
@@ -58,9 +59,9 @@ export class UsersController {
     };
   }
 
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @AuthRequired()
   @Delete('token/:token')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @RequiredPermissions(Permission.USER)
   async logout(@Param('token') token: string, @CurrentUser() user: User) {
     const tokenEntity = await this.tokensService.findOne({ token });
 

@@ -1,16 +1,17 @@
 import { Controller, Get, UseFilters, UseGuards } from '@nestjs/common';
 
-import { AuthRequired, CurrentUser } from '../decorators';
+import { RequiredPermissions, CurrentUser } from '../decorators';
 import { User } from '../entities';
+import { Permission } from '../enums';
 import { UsersExceptionsFilter } from '../filters';
-import { AuthGuard } from '../guards';
+import { PermissionsGuard } from '../guards';
 
 @UseFilters(new UsersExceptionsFilter())
-@UseGuards(AuthGuard)
+@UseGuards(PermissionsGuard)
 @Controller('-/whoami')
 export class WhoAmIController {
-  @AuthRequired()
   @Get()
+  @RequiredPermissions(Permission.USER)
   whoami(@CurrentUser() user: User) {
     return {
       username: user.name
