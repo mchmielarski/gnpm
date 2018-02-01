@@ -53,6 +53,7 @@ export class PermissionsGuard implements CanActivate {
     params: { user: User | null; org: Org | null }
   ) {
     switch (permission) {
+      case Permission.ORG_OWNER:
       case Permission.ORG_ADMIN:
       case Permission.ORG_MEMBER: {
         return this.hasOrgPermission(permission, params);

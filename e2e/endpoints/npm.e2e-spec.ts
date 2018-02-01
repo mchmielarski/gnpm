@@ -15,22 +15,24 @@ describe('/-/npm/v1', () => {
   });
 
   describe('/tokens', () => {
-    it('[GET] should return 401 if user is not logged in', () => {
-      return request(app.server)
-        .get('/-/npm/v1/tokens')
-        .expect(401);
-    });
+    describe('[GET]', () => {
+      it('should return 401 if user is not logged in', () => {
+        return request(app.server)
+          .get('/-/npm/v1/tokens')
+          .expect(401);
+      });
 
-    it('[GET] should return list of tokens if user is logged in', async () => {
-      await app.login();
+      it('should return list of tokens if user is logged in', async () => {
+        await app.login();
 
-      return request(app.server)
-        .get('/-/npm/v1/tokens')
-        .set('authorization', `Bearer ${app.token}`)
-        .expect(200)
-        .expect(response => {
-          if (!('objects' in response.body)) throw new Error('No tokens in response');
-        });
+        return request(app.server)
+          .get('/-/npm/v1/tokens')
+          .set('authorization', `Bearer ${app.token}`)
+          .expect(200)
+          .expect(response => {
+            if (!('objects' in response.body)) throw new Error('No tokens in response');
+          });
+      });
     });
   });
 });

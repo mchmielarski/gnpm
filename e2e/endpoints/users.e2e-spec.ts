@@ -16,59 +16,63 @@ describe('/-/user', () => {
   });
 
   describe('/org.couchdb.user:[user]', () => {
-    it('[PUT] should return 401 if wrong credentials', () => {
-      return request(app.server)
-        .put('/-/user/org.couchdb.user:user')
-        .send(fixtures.userWithoutEmail)
-        .expect(401);
-    });
+    describe('[PUT]', () => {
+      it('should return 401 if wrong credentials', () => {
+        return request(app.server)
+          .put('/-/user/org.couchdb.user:user')
+          .send(fixtures.userWithoutEmail)
+          .expect(401);
+      });
 
-    it('[PUT] should create user if email is in request', () => {
-      return request(app.server)
-        .put('/-/user/org.couchdb.user:user')
-        .send(fixtures.userWithEmail)
-        .expect(200)
-        .expect(response => {
-          if (!('ok' in response.body)) throw new Error('Missing ok key in response');
-          if (!('token' in response.body)) throw new Error('Missing token key in response');
-          if (!('key' in response.body)) throw new Error('Missing key key in response');
-        });
-    });
+      it('should create user if email is in request', () => {
+        return request(app.server)
+          .put('/-/user/org.couchdb.user:user')
+          .send(fixtures.userWithEmail)
+          .expect(200)
+          .expect(response => {
+            if (!('ok' in response.body)) throw new Error('Missing ok key in response');
+            if (!('token' in response.body)) throw new Error('Missing token key in response');
+            if (!('key' in response.body)) throw new Error('Missing key key in response');
+          });
+      });
 
-    it('[PUT] should login user', () => {
-      return request(app.server)
-        .put('/-/user/org.couchdb.user:user')
-        .send(fixtures.userWithoutEmail)
-        .expect(200)
-        .expect(response => {
-          if (!('ok' in response.body)) throw new Error('Missing ok key in response');
-          if (!('token' in response.body)) throw new Error('Missing token key in response');
-          if (!('key' in response.body)) throw new Error('Missing key key in response');
+      it('should login user', () => {
+        return request(app.server)
+          .put('/-/user/org.couchdb.user:user')
+          .send(fixtures.userWithoutEmail)
+          .expect(200)
+          .expect(response => {
+            if (!('ok' in response.body)) throw new Error('Missing ok key in response');
+            if (!('token' in response.body)) throw new Error('Missing token key in response');
+            if (!('key' in response.body)) throw new Error('Missing key key in response');
 
-          token = response.body.token;
-        });
+            token = response.body.token;
+          });
+      });
     });
   });
 
   describe('/token/[token]', () => {
-    it('[DELETE] Should return 401 if user not authorized', () => {
-      return request(app.server)
-        .delete('/-/user/token/token')
-        .expect(401);
-    });
+    describe('[DELETE]', () => {
+      it('Should return 401 if user not authorized', () => {
+        return request(app.server)
+          .delete('/-/user/token/token')
+          .expect(401);
+      });
 
-    it('[DELETE] Should return 404 if token does not exist', () => {
-      return request(app.server)
-        .delete('/-/user/token/token')
-        .set('authorization', `Bearer ${token}`)
-        .expect(404);
-    });
+      it('Should return 404 if token does not exist', () => {
+        return request(app.server)
+          .delete('/-/user/token/token')
+          .set('authorization', `Bearer ${token}`)
+          .expect(404);
+      });
 
-    it('[DELETE] Should return 204 after logout', () => {
-      return request(app.server)
-        .delete(`/-/user/token/${token}`)
-        .set('authorization', `Bearer ${token}`)
-        .expect(204);
+      it('Should return 204 after logout', () => {
+        return request(app.server)
+          .delete(`/-/user/token/${token}`)
+          .set('authorization', `Bearer ${token}`)
+          .expect(204);
+      });
     });
   });
 });

@@ -31,10 +31,6 @@ export class TestApp {
     private readonly app: INestApplication
   ) {}
 
-  setAuthHeader(req, token = this.token) {
-    return req.set('authorization', `Bearer ${token}`);
-  }
-
   dropDatabase() {
     return getConnection().dropDatabase();
   }
@@ -44,15 +40,10 @@ export class TestApp {
   }
 
   async login() {
-    this.user = 'user_' + Date.now();
+    const user = await this.createUser();
 
-    const response = await this.createUser({
-      name: this.user,
-      password: '111111',
-      email: `${this.user}@email.com`
-    });
-
-    this.token = response.body.token;
+    this.user = user.name;
+    this.token = user.token;
   }
 
   async logout() {
@@ -63,10 +54,21 @@ export class TestApp {
     this.token = null;
   }
 
-  createUser(data: { name: string; email: string; password: string }) {
-    return request(this.server)
+  async createUser(data?: { name: string; email: string; password: string }) {
+    data = data || {
+      name: 'u_' + Date.now(),
+      password: '111111',
+      email: `${this.user}@email.com`
+    };
+
+    const response = await request(this.server)
       .put(`/-/user/org.couchdb.user:${data.name}`)
       .send(data);
+
+    return {
+      ...data,
+      token: response.body.token
+    };
   }
 
   createOrg(data: { name: string }) {

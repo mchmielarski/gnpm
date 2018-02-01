@@ -44,7 +44,7 @@ export class OrgMembersController {
   }
 
   @Put()
-  @RequiredPermissions(Permission.ORG_ADMIN)
+  @RequiredPermissions(Permission.ORG_OWNER)
   @HttpCode(HttpStatus.CREATED)
   async createOrUpdate(@CurrentOrg() org: Org, @Body() memberData: OrgMemberCreateOrUpdateDTO) {
     await this.ensureThatUserExists(memberData.user);
@@ -62,7 +62,7 @@ export class OrgMembersController {
   }
 
   @Delete()
-  @RequiredPermissions(Permission.ORG_ADMIN)
+  @RequiredPermissions(Permission.ORG_OWNER)
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@CurrentOrg() org: Org, @Body() memberData: OrgMemberDeleteDTO) {
     await this.ensureThatUserExists(memberData.user);

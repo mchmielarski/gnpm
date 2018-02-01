@@ -13,10 +13,12 @@ describe('/-/ping', () => {
     app.destroy();
   });
 
-  it('[GET] should return status code 200 and empty object', () => {
-    return request(app.server)
-      .get('/-/ping')
-      .expect(200)
-      .expect({});
+  describe('[GET]', () => {
+    it('should return status code 200 and empty object', () => {
+      return request(app.server)
+        .get('/-/ping')
+        .expect(200)
+        .expect({});
+    });
   });
 });
