@@ -9,6 +9,18 @@ class Config {
     this.init();
   }
 
+  getGoogleCloudProjectId() {
+    return this.data.googleCloud.projectId;
+  }
+
+  getGoogleCloudKeyFilename() {
+    return this.data.googleCloud.keyFilename;
+  }
+
+  getGoogleCloudBucketName() {
+    return this.data.googleCloud.bucket;
+  }
+
   getEnv() {
     return process.env.NODE_ENV || 'dev';
   }
