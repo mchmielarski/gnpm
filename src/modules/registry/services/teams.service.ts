@@ -7,16 +7,14 @@ import { Role } from '../enums';
 
 @Component()
 export class TeamsService {
-  constructor(
-    @InjectRepository(Team) private readonly teamsRepository: Repository<Team>
-  ) {}
+  constructor(@InjectRepository(Team) private readonly teamsRepository: Repository<Team>) {}
 
   find(orgName: string) {
     return this.teamsRepository.find({ where: { orgName } });
   }
 
   get(orgName: string, name: string) {
-    return this.teamsRepository.findOne({ where: { orgName, name }});
+    return this.teamsRepository.findOne({ where: { orgName, name } });
   }
 
   async save(orgName: string, name: string) {

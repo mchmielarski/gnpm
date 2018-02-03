@@ -23,9 +23,7 @@ import { TeamsService } from '../services';
 @UseGuards(OrgExistsGuard, PermissionsGuard)
 @Controller()
 export class TeamsController {
-  constructor(
-    private readonly teamsService: TeamsService
-  ) {}
+  constructor(private readonly teamsService: TeamsService) {}
 
   @Get('-/org/:org/team')
   @RequiredPermissions(Permission.ORG_MEMBER)
