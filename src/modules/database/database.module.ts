@@ -7,7 +7,7 @@ import { config } from '../config';
   imports: [
     TypeOrmModule.forRoot({
       ...config.getDatabaseOptions(),
-      entities: [__dirname + '/../**/*.entity.ts']
+      entities: [__dirname + '/../**/*.entity.{ts,js}']
     })
   ]
 })

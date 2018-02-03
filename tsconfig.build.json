@@ -7,11 +7,12 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es6",
+    "module": "commonjs",
     "noImplicitAny": false,
     "strictNullChecks": false,
     "importHelpers": true,
     "baseUrl": "./",
-    "outDir": "./dist",
+    "outDir": "./lib",
     "typeRoots": [
       "node_modules/@types"
     ]
