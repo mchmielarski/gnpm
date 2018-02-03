@@ -17,11 +17,7 @@ import { config } from '../modules/config';
     DatabaseModule,
     LoggerModule.forRoot([new ConsoleAdapter(config.isDevEnv() ? LogLevel.INFO : LogLevel.ERROR)]),
     RegistryModule,
-    StorageModule.forRoot(StorageType.GOOGLE_STORAGE, {
-      projectId: config.getGoogleCloudProjectId(),
-      keyFilename: join(__dirname, config.getGoogleCloudKeyFilename()),
-      bucket: config.getGoogleCloudBucketName()
-    })
+    StorageModule.forRoot(config.getStorageType(), config.getStorageOptions())
   ]
 })
 export class AppModule implements NestModule {

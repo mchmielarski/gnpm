@@ -2,6 +2,10 @@
   hostname: localhost
   port: 5000
 
+  storage:
+    type: local
+    root: ./data
+
   database:
     type: sqlite
     database: ./tmp/test-db.sql

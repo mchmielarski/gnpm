@@ -9,18 +9,6 @@ class Config {
     this.init();
   }
 
-  getGoogleCloudProjectId() {
-    return this.data.googleCloud.projectId;
-  }
-
-  getGoogleCloudKeyFilename() {
-    return this.data.googleCloud.keyFilename;
-  }
-
-  getGoogleCloudBucketName() {
-    return this.data.googleCloud.bucket;
-  }
-
   getEnv() {
     return process.env.NODE_ENV || 'dev';
   }
@@ -43,6 +31,15 @@ class Config {
 
   getLocalRegistry() {
     return `http://${this.data.hostname}:${this.data.port}`;
+  }
+
+  getStorageType() {
+    return this.data.storage.type;
+  }
+
+  getStorageOptions() {
+    const { type, ...options } = this.data.storage;
+    return options;
   }
 
   getDatabaseOptions() {

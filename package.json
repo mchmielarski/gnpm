@@ -9,7 +9,8 @@
     "dev": "nodemon",
     "clean": "rimraf ./lib",
     "format": "prettier --write '{src,e2e}/**/*.ts'",
-    "e2e": "NODE_ENV=test mocha -r ts-node/register e2e/**/*.e2e-spec.ts"
+    "e2e": "NODE_ENV=test mocha -r ts-node/register e2e/**/*.e2e-spec.ts",
+    "poste2e": "rimraf ./tmp"
   },
   "keywords": [],
   "author": "Maciej Chmielarski <m.chmielarski@gmail.com>",
