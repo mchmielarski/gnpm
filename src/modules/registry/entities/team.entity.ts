@@ -26,7 +26,7 @@ export class Team {
   org: Org;
 
   @OneToMany(type => TeamMember, member => member.team)
-  members: Team[];
+  members: TeamMember[];
 
   readonly orgName;
 }

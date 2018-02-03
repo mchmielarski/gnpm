@@ -8,12 +8,13 @@ import { Team } from './team.entity';
 export class TeamMember {
   @PrimaryGeneratedColumn() id: number;
 
-  @Column() role: string;
-
   @OneToOne(type => User)
   @JoinColumn()
   user: User;
 
   @ManyToOne(type => Team, team => team.members)
   team: Team;
+
+  readonly userName: string;
+  readonly teamId: number;
 }
