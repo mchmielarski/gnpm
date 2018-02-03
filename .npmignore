@@ -1,5 +1,5 @@
-.env
 src
+e2e
 tsconfig.json
 tsconfig.build.json
 tslint.json
